@@ -15,11 +15,10 @@ example session:
 ```lisp
 ok> (let concat (func a b (list a b)))
 ((a, b) => 9f90b94a128e848a86650d6ce75619c8)@func
-ok> (concat 
+ok> (concat
 ok*   2
-ok*   3
-ok*   )
-[23@number nil]@array
+ok*   3)
+[2@number 3@number]@array
 ok> 
 ```
 

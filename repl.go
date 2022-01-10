@@ -25,11 +25,11 @@ func REPL(env *Env) error {
 	line.SetCtrlCAborts(true)
 	var (
 		bal int
-		src string
+		src []string
 	)
 	for {
 		var ps string
-		if src == "" {
+		if len(src) == 0 {
 			ps = replPrompt
 		} else {
 			ps = replEditPrompt
@@ -39,27 +39,27 @@ func REPL(env *Env) error {
 		suffix, err := line.Prompt(ps)
 		if err != nil {
 			if errors.Is(err, liner.ErrPromptAborted) {
-				if src != "" {
-					src = "" // reset partial state support
+				if len(src) != 0 {
+					src = nil // reset partial state support
 					continue
 				}
 				return nil
 			}
 			return err
 		}
-		tmp := src + suffix
-		result, err := EvalString("<stdin>", tmp, env)
+		tmp := append(src, suffix)
+		result, err := EvalString("<stdin>", strings.Join(tmp, " "), env)
 		if err != nil {
-			i := computeParensBalance(tmp)
+			i := computeParensBalance(strings.Join(tmp, " "))
 			if i >= 0 {
 				src, bal = tmp, i
 			} else {
-				bal, src = 0, ""
+				src, bal = nil, 0
 				fmt.Println("error:", err)
 			}
 			continue
 		}
-		bal, src = 0, ""
+		src, bal = nil, 0
 		env.Set("_", result)
 		line.AppendHistory(suffix)
 		fmt.Println(result)
