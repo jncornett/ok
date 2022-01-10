@@ -52,3 +52,8 @@ syntax: todo
 ### `switch` branching
 
 syntax: todo
+
+## acknowledgements
+
+- [participle](https://github.com/alecthomas/participle) - a unique, reflection-based parser generator.
+- [liner](https://github.com/peterh/liner) - a read-evaluate-print looper.
